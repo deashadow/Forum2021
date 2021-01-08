@@ -13,4 +13,11 @@ npm start
 ///Client side::::::::
 
 npx create-react-app
-
+npm install axios
+npm install bootstrap
+npm install react-bootstrap
+npm install react-router-dom
+npm install reactstrap
+npm install react-redux
+npm install redux
+npm install uuid, uuidv4
