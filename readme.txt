@@ -21,3 +21,4 @@ npm install reactstrap
 npm install react-redux
 npm install redux
 npm install uuid, uuidv4
+npm install node-sass@4.14.1

@@ -7,7 +7,9 @@ import ContactUs from "./ContactUs";
 import AboutUs from "./AboutUs";
 import NavB from "./NavB";
 import { BrowserRouter, Route, Switch, Prompt } from "react-router-dom";
-import { Login, Register } from "./components/login/index";
+import  Login from "./Login";
+
+// import React, { Component } from 'react'
 
 
 function App() {
@@ -17,7 +19,7 @@ function App() {
         <NavB />
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/login"  component={Login} />
+          <Route path="/Login"  component={Login} />
           <Route path="/Forum"  component={Forum} />
           <Route path="/AboutUs" component={AboutUs} />
           <Route path="/ContactUs" component={ContactUs} />
