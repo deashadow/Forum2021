@@ -1,0 +1,25 @@
+http://localhost:5000/iquestions
+
+###
+POST http://localhost:5000/questions HTTP/1.1
+content-type: application/json
+
+{
+    "qid": "Albert",
+    "question": "Hitchcock250"
+    
+}
+
+###
+DELETE http://localhost:5000/questions/4378dc83-cb3d-43a2-af21-f79846c44725
+
+###
+http://localhost:5000/questions/bc1acb06-df5c-4f25-946e-1cfe2de4fb6c
+
+###
+PATCH http://localhost:5000/questions/004 HTTP/1.1
+content-type: application/json
+
+{
+    "questions": "Susan"
+}
