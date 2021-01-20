@@ -1,152 +1,153 @@
-import mysql from 'mysql';
-const getConnection = async() => {
-    let conn = mysql.createConnection( {
-        "host" : "localhost",
-        "port": "3306",
-        "user": "root",
-        "password": "root",
-        "database": "studentdb"
-    })
-    await conn.connect( err => {
-        if (err) {
-            console.log('getConnection: connection error: ' + err)
-            return;
-        }
-        console.log('getConnection: connection successful');
-    })
-    return conn;
-}
+import mysql from "mysql";
+const getConnection = async () => {
+  let conn = mysql.createConnection({
+    host: "localhost",
+    port: "3306",
+    user: "root",
+    password: "root",
+    database: "studentdb",
+  });
+  await conn.connect((err) => {
+    if (err) {
+      console.log("getConnection: connection error: " + err);
+      return;
+    }
+    console.log("getConnection: connection successful");
+  });
+  return conn;
+};
 
 export const dbQueryQuestions = async (id) => {
-    var questions = [];
-    let conn = await getConnection();
-    const resultHandler = (err, result, fields, resolve) => {
-        if (err) {
-            console.log('dbQueryQuestions: connection error: ' + err)
-            return;
-        }
-        console.log('dbQueryQuestions: connection successful');
-        for (let i=0; i< result.length; i++) {
-            let row = result[i];
-            let question = { "cid" : row["CID"], "Question": row["QUESTION"], "qid" : row["QID"]}
-            console.log("question="+JSON.stringify(question))
-            questions = [...questions, question]
-        }
-        resolve( questions);   
+  var questions = [];
+  let conn = await getConnection();
+  const resultHandler = (err, result, fields, resolve) => {
+    if (err) {
+      console.log("dbQueryQuestions: connection error: " + err);
+      return;
     }
-    try {
-        return new Promise( (resolve, reject) => {
-            let sql = 'SELECT CID, QUESTION, QID FROM QUESTIONS WHERE CID = '+id;
-            console.log( 'dbQueryQuestions: sql='+sql);
-            conn.query( sql, (err, result, fields) => {
-                resultHandler( err, result, fields, resolve)
-            })
-        })
+    console.log("dbQueryQuestions: connection successful");
+    for (let i = 0; i < result.length; i++) {
+      let row = result[i];
+      let question = {
+        cid: row["CID"],
+        Question: row["QUESTION"],
+        qid: row["QID"],
+      };
+      console.log("question=" + JSON.stringify(question));
+      questions = [...questions, question];
     }
-    catch (err) {
-        console.log('dbQueryQuestions: caught error: ' + err)
-    }
-    finally {
-        if (conn) conn.end();
-    }
-    return new Promise( (resolve, reject) => {resolve([])})
-}
+    resolve(questions);
+  };
+  try {
+    return new Promise((resolve, reject) => {
+      let sql = "SELECT CID, QUESTION, QID FROM QUESTIONS WHERE CID = " + id;
+      console.log("dbQueryQuestions: sql=" + sql);
+      conn.query(sql, (err, result, fields) => {
+        resultHandler(err, result, fields, resolve);
+      });
+    });
+  } catch (err) {
+    console.log("dbQueryQuestions: caught error: " + err);
+  } finally {
+    if (conn) conn.end();
+  }
+  return new Promise((resolve, reject) => {
+    resolve([]);
+  });
+};
 
 export const dbQueryAnswers = async (qid) => {
-    var answers = [];
-    let conn = await getConnection();
-    const resultHandler = (err, result, fields, resolve) => {
-        if (err) {
-            console.log('dbQueryAnswers: connection error: ' + err)
-            return;
-        }
-        console.log('dbQueryAnswers: connection successful');
-        for (let i=0; i< result.length; i++) {
-            let row = result[i];
-            let answer = { "qid" : row["QID"], "Answer": row["ANSWER"]}
-            console.log("answer="+JSON.stringify(answer))
-            answers = [...answers, answer]
-        }
-        resolve( answers);   
+  var answers = [];
+  let conn = await getConnection();
+  const resultHandler = (err, result, fields, resolve) => {
+    if (err) {
+      console.log("dbQueryAnswers: connection error: " + err);
+      return;
     }
-    try {
-        return new Promise( (resolve, reject) => {
-            let sql = 'SELECT QID, ANSWER FROM ANSWERS WHERE QID = '+qid;
-            console.log( 'dbQueryAnswers: sql='+sql);
-            conn.query( sql, (err, result, fields) => {
-                resultHandler( err, result, fields, resolve)
-            })
-        })
+    console.log("dbQueryAnswers: connection successful");
+    for (let i = 0; i < result.length; i++) {
+      let row = result[i];
+      let answer = { qid: row["QID"], Answer: row["ANSWER"] };
+      console.log("answer=" + JSON.stringify(answer));
+      answers = [...answers, answer];
     }
-    catch (err) {
-        console.log('dbQueryAnswers: caught error: ' + err)
-    }
-    finally {
-        if (conn) conn.end();
-    }
-    return new Promise( (resolve, reject) => {resolve([])})
-}
-
-
+    resolve(answers);
+  };
+  try {
+    return new Promise((resolve, reject) => {
+      let sql = "SELECT QID, ANSWER FROM ANSWERS WHERE QID = " + qid;
+      console.log("dbQueryAnswers: sql=" + sql);
+      conn.query(sql, (err, result, fields) => {
+        resultHandler(err, result, fields, resolve);
+      });
+    });
+  } catch (err) {
+    console.log("dbQueryAnswers: caught error: " + err);
+  } finally {
+    if (conn) conn.end();
+  }
+  return new Promise((resolve, reject) => {
+    resolve([]);
+  });
+};
 
 export const dbInsertQuestions = async (question) => {
-    var question;
-    let conn = await getConnection();
-    const resultHandler = (err, result, fields, resolve) => {
-        if (err) {
-            console.log('dbInsertQuestions: connection error: ' + err)
-            return;
-        }
-        console.log('dbInsertQuestions: connection successful');
-        resolve( 1);   
+  var question;
+  let conn = await getConnection();
+  const resultHandler = (err, result, fields, resolve) => {
+    if (err) {
+      console.log("dbInsertQuestions: connection error: " + err);
+      return;
     }
-    try {
-        return new Promise( (resolve, reject) => {
-            let sql = `INSERT INTO QUESTIONS (CID, QUESTION) VALUES ('${question.cid}', '${question.question})`;
-            console.log( 'dbInsertQuestions: sql='+sql);
-            conn.query( sql, (err, result, fields) => {
-                resultHandler( err, result, fields, resolve)
-            })
-        })
-    }
-    catch (err) {
-        console.log('dbInsertQuestions: caught error: ' + err)
-    }
-    finally {
-        if (conn) conn.end();
-    }
-    return new Promise( (resolve, reject) => {resolve(0)})
-}
+    console.log("dbInsertQuestions: connection successful");
+    resolve(1);
+  };
+  try {
+    return new Promise((resolve, reject) => {
+      let sql = `INSERT INTO QUESTIONS (CID, QUESTION) VALUES ('${question.cid}', '${question.question})`;
+      console.log("dbInsertQuestions: sql=" + sql);
+      conn.query(sql, (err, result, fields) => {
+        resultHandler(err, result, fields, resolve);
+      });
+    });
+  } catch (err) {
+    console.log("dbInsertQuestions: caught error: " + err);
+  } finally {
+    if (conn) conn.end();
+  }
+  return new Promise((resolve, reject) => {
+    resolve(0);
+  });
+};
 
+export const dbDeleteQuestions = async (id) => {
+  let conn = await getConnection();
+  const resultHandler = (err, result, fields, resolve) => {
+    if (err) {
+      console.log("dbDeleteQuestion: connection error: " + err);
+      return;
+    }
+    console.log("dbDeleteQuestion: connection successful");
+    resolve(1);
+  };
+  try {
+    return new Promise((resolve, reject) => {
+      let sql = `DELETE FROM QUESTIONS WHERE UID='${id}'`;
+      console.log("dbDeleteQuestion: sql=" + sql);
+      conn.query(sql, (err, result, fields) => {
+        resultHandler(err, result, fields, resolve);
+      });
+    });
+  } catch (err) {
+    console.log("dbDeleteQuestion: caught error: " + err);
+  } finally {
+    if (conn) conn.end();
+  }
+  return new Promise((resolve, reject) => {
+    resolve(0);
+  });
+};
 
- export const dbDeleteQuestions = async (id) => {
-    let conn = await getConnection();
-    const resultHandler = (err, result, fields, resolve) => {
-        if (err) {
-            console.log('dbDeleteQuestion: connection error: ' + err)
-            return;
-        }
-        console.log('dbDeleteQuestion: connection successful');
-        resolve( 1);   
-    }
-    try {
-        return new Promise( (resolve, reject) => {
-            let sql = `DELETE FROM QUESTIONS WHERE UID='${id}'`;
-            console.log( 'dbDeleteQuestion: sql='+sql);
-            conn.query( sql, (err, result, fields) => {
-                resultHandler( err, result, fields, resolve)
-            })
-        })
-    }
-    catch (err) {
-        console.log('dbDeleteQuestion: caught error: ' + err)
-    }
-    finally {
-        if (conn) conn.end();
-    }
-    return new Promise( (resolve, reject) => {resolve(0)})
-}
- 
 /* export const dbUpdateQuestions = async (user) => {
     var user;
     let conn = await getConnection();
