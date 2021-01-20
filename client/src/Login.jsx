@@ -2,7 +2,6 @@ import React from 'react';
 import loginImg from "./login.svg";
 import { useState } from 'react'
 import Axios from 'axios';
-import { Redirect} from "react-router-dom";
 import { Link } from "react-router-dom";
 
 
@@ -21,6 +20,7 @@ const addUser = () =>{
     Axios.post('http://localhost:5000/login', 
     {username:username, password:password}).then(()=>{
         console.log("Success! Your information has been saved to the database")
+        alert('Your have logged in successfully!!')
     })
 };
     return (

@@ -2,6 +2,7 @@ import express from 'express';
 import Router from 'express-promise-router';
 import bodyParser from 'body-parser';
 import userQuestions from './routes/questions.js'
+import userAnswers from './routes/answers.js'
 import forumRoutes from './routes/forumRouter.js'
 import cors from 'cors';
 import mysql from 'mysql';
@@ -42,8 +43,24 @@ app.post('/login',(request, response)=> {
   );
 });
 
+app.post('/Question',(request, response)=> {
+    const cid = request.body.cid;
+    const question = request.body.question;
+
+    db.query('INSERT INTO questions ( cid, question) VALUES ( ?, ?)', 
+    [ cid, question], (err, result)=>{
+        if (err) {
+            console.log(err);
+        } else {
+            response.send("Your question has been inserted into the database")
+        }
+    }
+  );
+});
+
 app.get('/', home);   // localhost:3000/
 app.use('/questions', userQuestions); // localhost:3000/mquestions
+app.use('/answers', userAnswers); // localhost:3000/mquestions
 app.use('/forumRouter', forumRoutes); // localhost:3000/api
 
 app.listen( port, () => console.log( 'listening on port ' + port));

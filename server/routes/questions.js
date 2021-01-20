@@ -13,6 +13,7 @@ const queryQuestions = async (request, response) => {
     questions.forEach( question => {
         console.log( question)
     })
+    console.log('masood ');
     console.log('GET: questions='+JSON.stringify(questions));
     response.send(questions);
     const context = {"questions": questions }

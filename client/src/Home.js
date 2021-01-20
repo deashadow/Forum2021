@@ -8,7 +8,8 @@ import { Link } from "react-router-dom";
 //import { connect } from "react-redux";
 
 
-function Home () {
+class Home extends Component {
+  render() {
      return (
       <div>
         <div className="App">
@@ -52,8 +53,8 @@ function Home () {
          
     );
   }
+}
 
 
 
-
-export default Home;
+  export default Home;

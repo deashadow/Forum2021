@@ -1,7 +1,8 @@
-import logo from "./logo.svg";
 import businessLogo from "./businessLogo.jpg";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
+import QuestionList from './QuestionList';
+import AnswerSheet from './AnswerSheet';
 import { Link } from "react-router-dom";
 //import { uuid } from "uuidv4";
 import React, { Component } from "react";
@@ -10,21 +11,67 @@ import React, { Component } from "react";
 class Forum extends Component {
   constructor(props) {
     super(props);
-    this.state = { expressResponse: "waiting to get your questions" };
 
+    this.state = { 
+      questions: [],
+      answers:[]
+     };
     this.sendGet = (id) => {
       console.log("sendGet");
+      console.log('ron')
       fetch(`http://localhost:5000/questions/${id}`, {
         method: "GET",
       }).then((res) => res.text())
         .then((data) => {
-          console.log(data);
-          this.setState({ expressResponse: data });
+          let obj = JSON.parse(data);
+          console.log("obj=" + JSON.stringify(obj))
+          let questions = obj
+          questions.forEach( questions => { 
+            console.log("id="+questions.cid+",Question="+questions.Question + ", QuestionId = "+questions.qid)
+          });
+          this.setState({ questions : [...questions] })
+      })
+      .catch(err => console.error("Error:", err));
+    };
+
+    this.sendGetA = (id) => {
+      console.log("sendGetA");
+      fetch(`http://localhost:5000/answers/${id}`, {
+        method: "GET",
+      })
+        .then((res) => res.text())
+        .then((data) => {
+          let obj = JSON.parse(data);
+          console.log("obj=" + JSON.stringify(obj));
+          let answers = obj;
+          answers.forEach((answers) => {
+            console.log("id=" + answers.qid + ",Answers=" + answers.Answer);
+          });
+          this.setState({ answers: [...answers] });
         })
         .catch((err) => console.error("Error:", err));
     };
+    /* this.sendGetA = (id) => {
+      console.log("sendGet");
+      fetch(`http://localhost:5000/answers/${id}`, {
+        method: "GET",
+      })
+        .then((res) => res.text())
+        .then((data) => {
+          let obj = JSON.parse(data);
+          console.log("obj=" + JSON.stringify(obj));
+          let answers = obj;
+          answers.forEach((answers) => {
+            console.log("id=" + answers.qid + ",Answers=" + answers.Answer);
+          });
+          this.setState({ answers: [...answers] });
+        })
+        .catch((err) => console.error("Error:", err));
+    }; */
 
-    this.sendPost = () => {
+    
+
+    this.sendPost = (id) => {
       console.log("sendPost");
       const data = { cid: 1, question: "" };
       fetch(`http://localhost:5000/questions`, {
@@ -128,14 +175,17 @@ class Forum extends Component {
             </header>
           </div>
           <br></br>
-          <div className="col-sm-4 mt-4">
-            <p id="addquestion">{this.state.expressResponse}</p>
+          <div className="col-sm-4 ">
+            <p id="addquestion"> <QuestionList  questions={this.state.questions} sendGetA={this.sendGetA} /></p>
           </div>
 
           <div class="col-sm-4">
+            
+              <p id="answer" ><AnswerSheet  answers={this.state.answers}/></p>
+            
             <div>
               <form >
-                <a id="addquestion" href="/addQuestion" role="button" class="btn btn-primary btn-lg">
+                <a id="addquestion1" href="/addQuestion" role="button" class="btn btn-primary btn-lg">
                   Add a Question Here
                 </a>
               </form>

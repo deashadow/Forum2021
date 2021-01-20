@@ -9,21 +9,40 @@
   margin-left: 1px;
 }
 
+.row-height {
+  height: 100vh;
+}
+
+.mid {
+  background-color: grey;
+  height: 100%;
+  overflow-y: scroll;
+}
+
 #categoryanswers {
   margin-top: 20px;
   padding-top: 20px;
 }
 
 #addquestion {
-  margin-top: 150px
+  margin-top: 25px
+}
+
+
+#addquestion1 {
+  margin-top: 185px
 }
 
 .question {
-  height: 200px;
+  height: 45px;
 }
 
 #questions {
   margin-top: 150px;
+}
+
+#answer {
+  margin-top: 50px;
 }
 
 

@@ -28,7 +28,7 @@ export const dbQueryQuestions = async (id) => {
         console.log('dbQueryQuestions: connection successful');
         for (let i=0; i< result.length; i++) {
             let row = result[i];
-            let question = { "cid" : row["CID"], "question": row["QUESTION"]}
+            let question = { "cid" : row["CID"], "Question": row["QUESTION"], "qid" : row["QID"]}
             console.log("question="+JSON.stringify(question))
             questions = [...questions, question]
         }
@@ -36,7 +36,7 @@ export const dbQueryQuestions = async (id) => {
     }
     try {
         return new Promise( (resolve, reject) => {
-            let sql = 'SELECT CID, QUESTION FROM QUESTIONS WHERE CID = '+id;
+            let sql = 'SELECT CID, QUESTION, QID FROM QUESTIONS WHERE CID = '+id;
             console.log( 'dbQueryQuestions: sql='+sql);
             conn.query( sql, (err, result, fields) => {
                 resultHandler( err, result, fields, resolve)
@@ -52,6 +52,40 @@ export const dbQueryQuestions = async (id) => {
     return new Promise( (resolve, reject) => {resolve([])})
 }
 
+export const dbQueryAnswers = async (qid) => {
+    var answers = [];
+    let conn = await getConnection();
+    const resultHandler = (err, result, fields, resolve) => {
+        if (err) {
+            console.log('dbQueryAnswers: connection error: ' + err)
+            return;
+        }
+        console.log('dbQueryAnswers: connection successful');
+        for (let i=0; i< result.length; i++) {
+            let row = result[i];
+            let answer = { "qid" : row["QID"], "Answer": row["ANSWER"]}
+            console.log("answer="+JSON.stringify(answer))
+            answers = [...answers, answer]
+        }
+        resolve( answers);   
+    }
+    try {
+        return new Promise( (resolve, reject) => {
+            let sql = 'SELECT QID, ANSWER FROM ANSWERS WHERE QID = '+qid;
+            console.log( 'dbQueryAnswers: sql='+sql);
+            conn.query( sql, (err, result, fields) => {
+                resultHandler( err, result, fields, resolve)
+            })
+        })
+    }
+    catch (err) {
+        console.log('dbQueryAnswers: caught error: ' + err)
+    }
+    finally {
+        if (conn) conn.end();
+    }
+    return new Promise( (resolve, reject) => {resolve([])})
+}
 
 
 
