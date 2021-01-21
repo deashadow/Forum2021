@@ -191,9 +191,14 @@ class Forum extends Component {
                 </a>
               </form>
             </div>
+            <br></br>
+            <div>
+              <button type="text" class="btn btn-warning mb-2">
+                <Link to="/Comments">Go to Comments</Link>
+              </button>
+            </div>
           </div>
         </div>
-
         <div>
           <footer
             id="homefooter"

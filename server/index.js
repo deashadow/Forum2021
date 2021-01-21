@@ -27,6 +27,7 @@ app.use(bodyParser.json());
 const home = (request, response) => {
   response.send("hi there-- I am working");
 };
+
 app.post("/login", (request, response) => {
   const username = request.body.username;
   const password = request.body.password;
@@ -60,6 +61,23 @@ app.post("/Question", (request, response) => {
     }
   );
 });
+
+app.post("/Comments", (request, response) => {
+  const username = request.body.username;
+  const comment = request.body.comment;
+      
+    db.query(
+      "INSERT INTO forum2021comments ( username, comment) VALUES (?, ?)",
+      [username, comment],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          response.send("Your comment been inserted into the database");
+        }
+      }
+    );
+  });
 
 app.get("/", home); // localhost:3000/
 app.use("/questions", userQuestions); // localhost:3000/mquestions

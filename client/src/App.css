@@ -30,7 +30,7 @@
 
 
 #addquestion1 {
-  margin-top: 150px
+  margin-top: 20px
 }
 
 .question {
@@ -45,6 +45,28 @@
   margin-top: 50px;
 }
 
+#comments {
+  margin-top: 75px;
+}
+
+.comment {
+  height: 100px;
+  width: 400px;
+  background-color: rgb(144, 235, 247);
+  font-size: 30px;
+}
+
+.comment1 {
+  height: 50px;
+  width: 250px;
+  background-color: rgb(144, 235, 247);
+  font-size: 20px;
+  margin-bottom: 0px;
+}
+
+#commentpage {
+  background-color: #d7e2f8
+}
 
 .App1 {
   background-color: #d7e2f8;
